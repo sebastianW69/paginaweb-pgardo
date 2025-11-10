@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Marketplace Textil - Prototipo Premium</title>
+  <link rel="stylesheet" href="css/estilo.css" />
+  <link rel="stylesheet" href="./bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+</head>
+<body data-theme="light">
+  <header class="bg-light shadow-sm">
+    <div class="container-fluid d-flex align-items-center py-2 flex-wrap">
+      <div class="logo flex-grow-1">TextilBog</div>
+      <div class="search flex-grow-1 mx-3">
+        <input class="form-control" placeholder="Buscar productos, talleres o materiales..." />
+      </div>
+      <nav class="navlinks d-none d-md-flex gap-3">
+        <a id="loginBtn" href="paginas/iniciar-sesion.html" class="nav-link">Iniciar sesión</a>
+        <a href="paginas/categoria.html" class="nav-link">Categorías</a>
+        <a href="paginas/vender.html" class="nav-link">Vender</a>
+        <a href="paginas/mi-cuenta.html" class="nav-link">Mi cuenta</a>
+        <div class="cart-icon" id="openCart">🛒<span class="cart-count" id="cartCount">0</span></div>
+      </nav>
+      <button class="btn btn-outline-secondary d-md-none ms-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuMobile">
+        ☰
+      </button>
+      <button class="toggle-theme ms-2" id="toggleTheme">🌙</button>
+    </div>
+    <!-- Menú móvil -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="menuMobile">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Menú</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body">
+        <a id="loginBtn" href="paginas/iniciar-sesion.html" class="nav-link">Iniciar sesión</a>
+        <a href="paginas/categoria.html" class="nav-link">Categorías</a>
+        <a href="paginas/vender.html" class="nav-link">Vender</a>
+        <a href="paginas/mi-cuenta.html" class="nav-link">Mi cuenta</a>
+        <div class="cart-icon" id="openCart">🛒<span class="cart-count" id="cartCount">0</span></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="bg-light shadow-sm text-center py-4">
+    <h2 style="color:var(--accent);margin-bottom:12px;">Bienvenido a TextilBog</h2>
+    <p class="mx-auto text-muted fs-5" style="max-width:700px;">
+      El marketplace para talleres textiles de Bogotá. Encuentra moda exclusiva, artesanal y sostenible.
+    </p>
+  </section>
+
+  <main class="bg-light shadow-sm container">
+    <!-- Hero centrado y grande en escritorio -->
+    <section class="hero row justify-content-center align-items-center mb-4">
+      <div class="col-12 col-lg-6 d-flex flex-column align-items-center">
+        <div class="hero-card p-4 rounded shadow-sm mb-3 w-100 text-center">
+          <h1 class="display-5">Moda Exclusiva de Bogotá</h1>
+          <p class="lead">Confecciones únicas que reflejan calidad, diseño y lujo artesanal local.</p>
+          <div class="d-flex gap-3 justify-content-center">
+            <button class="btn">Explorar colección</button>
+            <a style="align-self:center;color:var(--accent)" href="#">Conoce más</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-6 text-center">
+        <img src="./imagenes/inicio.png" alt="Hero Textil" class="img-fluid rounded mx-auto" />
+      </div>
+    </section>
+
+    <!-- Categorías -->
+    <section class="cats row justify-content-center mb-4">
+      <div class="col-6 col-md-3 mb-3">
+        <div class="cat text-center p-3 rounded">👗 Ropa femenina</div>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <div class="cat text-center p-3 rounded">👕 Ropa masculina</div>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <div class="cat text-center p-3 rounded">🧒 Infantil</div>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <div class="cat text-center p-3 rounded">👜 Accesorios</div>
+      </div>
+    </section>
+
+    <!-- Productos destacados en matriz centrada y responsive -->
+    <h3 class="mb-4 fs-4 text-center" style="color:var(--accent);font-weight:700">Productos destacados</h3>
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-6 col-lg-4 mb-4 d-flex">
+        <article class="product h-100 w-100" onclick="openProduct('p1')">
+          <div class="thumb"><img src="./imagenes/campesino.png" alt="Blusa artesanal" class="img-fluid rounded" /></div>
+          <div class="p-title">Blusa campesina - Algodón</div>
+          <div class="p-price">$75.000 COP</div>
+          <div class="p-seller">Taller Los Andes</div>
+          <div class="p-desc">Blusa fresca de algodón 100%, con bordados artesanales inspirados en la cultura andina.</div>
+          <div class="p-reviews"><span class="stars">★★★★★</span> (12 reseñas)</div>
+        </article>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-4 mb-4 d-flex">
+        <article class="product h-100 w-100" onclick="openProduct('p2')">
+          <div class="thumb"><img src="./imagenes/lino.png" alt="Camisa lino stretch" class="img-fluid rounded" /></div>
+          <div class="p-title">Camisa lino stretch</div>
+          <div class="p-price">$120.000 COP</div>
+          <div class="p-seller">Atelier M</div>
+          <div class="p-desc">Camisa ligera de lino con elasticidad, ideal para climas cálidos. Corte moderno y elegante.</div>
+          <div class="p-reviews"><span class="stars">★★★★☆</span> (8 reseñas)</div>
+        </article>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-4 mb-4 d-flex">
+        <article class="product h-100 w-100" onclick="openProduct('p3')">
+          <div class="thumb"><img src="./imagenes/vestido.png" alt="Vestido verano" class="img-fluid rounded" /></div>
+          <div class="p-title">Vestido verano</div>
+          <div class="p-price">$95.000 COP</div>
+          <div class="p-seller">Hecho a Mano</div>
+          <div class="p-desc">Vestido ligero y vaporoso con estampados florales, perfecto para ocasiones casuales o de playa.</div>
+          <div class="p-reviews"><span class="stars">★★★★★</span> (15 reseñas)</div>
+        </article>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-4 mb-4 d-flex">
+        <article class="product h-100 w-100" onclick="openProduct('p4')">
+          <div class="thumb"><img src="./imagenes/cuero.png" alt="Chaqueta cuero" class="img-fluid rounded" /></div>
+          <div class="p-title">Chaqueta cuero legítimo</div>
+          <div class="p-price">$320.000 COP</div>
+          <div class="p-seller">Leather Co.</div>
+          <div class="p-desc">Chaqueta clásica de cuero legítimo, resistente y elegante, ideal para un look urbano premium.</div>
+          <div class="p-reviews"><span class="stars">★★★★☆</span> (20 reseñas)</div>
+        </article>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-4 mb-4 d-flex">
+        <article class="product h-100 w-100" onclick="openProduct('p5')">
+          <div class="thumb"><img src="./imagenes/bolso.png" alt="Bolso artesanal" class="img-fluid rounded" /></div>
+          <div class="p-title">Bolso artesanal en fique</div>
+          <div class="p-price">$85.000 COP</div>
+          <div class="p-seller">Arte Local</div>
+          <div class="p-desc">Bolso tejido en fique natural con detalles en cuero, elaborado por artesanos bogotanos.</div>
+          <div class="p-reviews"><span class="stars">★★★★★</span> (10 reseñas)</div>
+        </article>
+      </div>
+    </div>
+
+    <section class="checkout-section">
+      <h3>🛍️ Carrito de compras y pago</h3>
+      <div class="row checkout-options">
+        <div class="col-12 col-md-6 mb-3">
+          <div class="checkout-card h-100">
+            <h4>Medios de pago</h4>
+            <ul>
+              <li>💳 Tarjeta débito/crédito</li>
+              <li>🏦 Transferencia bancaria</li>
+              <li>📱 Pagos móviles (Nequi, Daviplata)</li>
+              <li>💵 Pago contra entrega</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 mb-3">
+          <div class="checkout-card h-100">
+            <h4>Opciones de envío</h4>
+            <ul>
+              <li>🚚 Envío estándar (3-5 días hábiles)</li>
+              <li>⚡ Envío express (24-48h)</li>
+              <li>📍 Recoger en tienda</li>
+              <li>🌎 Envíos nacionales</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id="cartItems"></div>
+      <p>Total: <span id="cartTotal">0</span> COP</p>
+    </section>
+
+    <section class="checkout-section">
+      <h3>💬 Comentarios de la página</h3>
+      <div id="commentsList"></div>
+      <textarea id="commentText" class="form-control mb-2" placeholder="Escribe tu comentario..."></textarea>
+      <button class="btn" id="submitComment">Enviar</button>
+    </section>
+
+    <section class="checkout-section">
+      <h3>📞 Servicio al Cliente</h3>
+      <p>¿Necesitas ayuda? Contáctanos:</p>
+      <ul>
+        <li>📧 Email: soporte@textilbog.com</li>
+        <li>📱 WhatsApp: +57 300 123 4567</li>
+        <li>📍 Colombia</li>
+      </ul>
+      <textarea id="supportMsg" class="form-control mb-2" placeholder="Escribe tu mensaje de soporte..."></textarea>
+      <button class="btn" onclick="alert('Mensaje enviado al servicio al cliente')">Enviar</button>
+    </section>
+  </main>
+
+  <footer class="bg-light shadow-sm text-center py-3 mt-5">
+    © 2025 TextilBog - Todos los derechos reservados
+  </footer>
+
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('#loginModal')">✖</span>
+      <h3>Iniciar sesión</h3>
+      <input id="loginName" placeholder="Nombre"/><br/>
+      <input id="loginPass" type="password" placeholder="Contraseña"/><br/>
+      <button class="btn" id="loginSubmit">Entrar</button>
+    </div>
+  </div>
+
+  <div class="modal" id="productModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('#productModal')">✖</span>
+      <h3 id="modalTitle"></h3>
+      <img id="modalImg" style="width:100%;border-radius:12px"/>
+      <p id="modalDesc"></p>
+      <p><b id="modalPrice"></b></p>
+      <label>Color:
+        <select id="modalColor" class="form-select">
+          <option>Rojo</option>
+          <option>Azul</option>
+          <option>Negro</option>
+          <option>Blanco</option>
+          <option>Verde</option>
+        </select>
+      </label>
+      <label>Talla:
+        <select id="modalSize" class="form-select">
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+          <option>XL</option>
+        </select>
+      </label>
+      <button class="btn" id="addToCart">Agregar al carrito</button>
+      <h4>Reseñas</h4>
+      <div id="reviewsList"></div>
+      <textarea id="reviewText" class="form-control mb-2" placeholder="Escribe una reseña..."></textarea>
+      <button class="btn" id="submitReview">Enviar reseña</button>
+    </div>
+  </div>
+
+  <script src="./bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/mecanicas.js"></script>
+</body>
+</html>

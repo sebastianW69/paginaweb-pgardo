@@ -1,0 +1,74 @@
+/* Estilos únicos para la página de vender */
+.vender-form {
+  max-width: 420px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 32px 28px;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.vender-form label {
+  font-weight: 500;
+  color: var(--accent-dark);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.vender-form input,
+.vender-form textarea,
+.vender-form select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #d8cfae;
+  font-size: 16px;
+  margin-bottom: 8px;
+  background: #f9f8f3;
+  transition: border .2s;
+}
+
+.vender-form input:focus,
+.vender-form textarea:focus,
+.vender-form select:focus {
+  border: 1.5px solid var(--accent);
+  outline: none;
+}
+
+.vender-form textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+.vender-form button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  padding: 12px 0;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(198,166,100,0.10);
+  transition: background .2s;
+}
+
+.vender-form button:hover {
+  background: var(--accent-dark);
+}
+
+.info-comision {
+  max-width: 420px;
+  margin: 18px auto;
+  background: #fffbe6;
+  padding: 16px;
+  border-radius: 14px;
+  color: #a67c00;
+  font-size: 15px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(198,166,100,0.08);
+}

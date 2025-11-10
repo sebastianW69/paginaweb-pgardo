@@ -1,0 +1,16 @@
+/* Estilos únicos para la página de categorías */
+.cats {
+  justify-content: center;
+  margin-top: 40px;
+}
+.cat {
+  background: #f7f7e6;
+  color: #a67c00;
+  border: 2px solid var(--accent);
+  font-size: 18px;
+  transition: background .2s, color .2s;
+}
+.cat:hover {
+  background: var(--accent);
+  color: #fff;
+}

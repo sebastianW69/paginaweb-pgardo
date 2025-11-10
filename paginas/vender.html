@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vender - Marketplace Textil</title>
+  <link rel="stylesheet" href="../css/estilo.css" />
+  <link rel="stylesheet" href="../css/vender.css" />
+  <link rel="stylesheet" href="../bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+</head>
+<body data-theme="light">
+  <header class="bg-light shadow-sm">
+    <div class="container-fluid d-flex align-items-center py-2 flex-wrap">
+      <div class="logo flex-grow-1">TextilBog</div>
+      <nav class="navlinks d-none d-md-flex gap-3">
+        <a href="../index.html" class="nav-link">Inicio</a>
+        <a href="categoria.html" class="nav-link">Categorías</a>
+        <a href="vender.html" class="nav-link">Vender</a>
+        <a href="mi-cuenta.html" class="nav-link">Mi cuenta</a>
+        <a href="iniciar-sesion.html" class="nav-link">Iniciar sesión</a>
+      </nav>
+      <button class="btn btn-outline-secondary d-md-none ms-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuMobile">
+        ☰
+      </button>
+    </div>
+    <!-- Menú móvil -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="menuMobile">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Menú</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body">
+        <a href="../index.html" class="nav-link">Inicio</a>
+        <a href="categoria.html" class="nav-link">Categorías</a>
+        <a href="vender.html" class="nav-link">Vender</a>
+        <a href="mi-cuenta.html" class="nav-link">Mi cuenta</a>
+        <a href="iniciar-sesion.html" class="nav-link">Iniciar sesión</a>
+      </div>
+    </div>
+  </header>
+  <main class="container py-4">
+    <section class="text-center mb-4">
+      <h2 class="text-accent mb-3" style="color:var(--accent);">Vender en TextilBog</h2>
+      <p class="mx-auto text-muted fs-5" style="max-width:700px;">
+        Comparte tus productos artesanales y llega a más clientes. Completa el formulario a continuación para comenzar a vender.
+      </p>
+    </section>
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6">
+        <form class="vender-form" id="sellForm">
+          <div class="mb-3">
+            <label for="productName" class="form-label">Nombre del producto:</label>
+            <input type="text" id="productName" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="productDescription" class="form-label">Descripción:</label>
+            <textarea id="productDescription" class="form-control" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="productPrice" class="form-label">Precio:</label>
+            <input type="number" id="productPrice" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="productImage" class="form-label">Selecciona una imagen:</label>
+            <input type="file" id="productImage" class="form-control" accept="image/*" required />
+          </div>
+          <button type="submit" class="btn w-100">Publicar producto</button>
+        </form>
+        <div class="info-comision mt-3">
+          Comisión por venta: <b>15%</b>. El dinero se transfiere a Nequi (<b>3001234567</b>) o PayPal (<b>micuenta@paypal.com</b>).<br>
+          Si tienes plan Premium, tus productos aparecerán primero en el marketplace.
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="bg-light text-center py-3 mt-5">
+    © 2025 TextilBog - Todos los derechos reservados
+  </footer>
+  <script src="../bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/mecanicas.js"></script>
+</body>
+</html>

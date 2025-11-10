@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>datos de tem y hum</title>
+    <link rel="stylesheet" href="./estilo/estilo.css">
+</head>
+
+        <header>  </header>
+        <nav></nav>
+        <section>
+            <article>
+                <h1>Datos de tem y humedad</h1>
+                <p>Ingrese los datos</p>
+                <form action="./php/temyhum.php" method="post">
+                    <input type="text" name="nombreUsuario" id="nombreUsuario" placeholder="Ingrese nombre" required>
+                    <input type="text" name="apellidoUsuario" id="apellidoUsuario" placeholder="Ingrese apellido" required>
+                    <input type="datetime-local" name="fechayhora">
+                    <input type="number" name="temperatura" id="temperatura"  required placeholder="Ingrese temperatura" >
+                    <input type="humedad" name="humedad" id="humedad" required placeholder="Ingrese humedad">
+                    <input type="submit" value="Enviar">
+
+
+                </form>
+
+            </article>
+        </section>
+
+        
+        <footer>
+            <p>© 2025 - guardar Datos Iot </p>
+        </footer>
+    </div>
+</body>
+</html>

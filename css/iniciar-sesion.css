@@ -1,0 +1,114 @@
+/* Estilos únicos para la página de iniciar sesión */
+.login-container {
+  max-width: 400px;
+  margin: 40px auto;
+  background: var(--card);
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+}
+.login-title {
+  color: var(--accent);
+  font-size: 28px;
+  margin-bottom: 18px;
+  text-align: center;
+}
+.plan-label {
+  margin: 18px 0 10px;
+  font-weight: 600;
+  color: var(--accent-dark);
+}
+.plan-options {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+.plan-card {
+  background: var(--bg);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 14px 20px;
+  min-width: 120px;
+  text-align: center;
+  cursor: pointer;
+  transition: background .2s;
+}
+.plan-card.selected {
+  background: var(--accent);
+  color: #fff;
+}
+/* Ventana modal para login y registro */
+.login-modal, .register-modal {
+  max-width: 440px;
+  margin: 60px auto;
+  background: #fff;
+  padding: 36px 32px 24px 32px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+}
+.login-title, .register-title {
+  color: var(--accent);
+  font-size: 30px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 700;
+}
+.login-fields, .register-fields {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+.login-fields label, .register-fields label {
+  font-weight: 500;
+  color: var(--accent-dark);
+  margin-bottom: 4px;
+}
+.login-fields input, .register-fields input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #d8cfae;
+  font-size: 16px;
+  background: #f9f8f3;
+  transition: border .2s;
+}
+.login-fields input:focus, .register-fields input:focus {
+  border: 1.5px solid var(--accent);
+  outline: none;
+}
+.btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  padding: 12px 0;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(198,166,100,0.10);
+  transition: background .2s;
+}
+.btn:hover {
+  background: var(--accent-dark);
+}
+.register-link, .login-link {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 15px;
+  color: var(--accent-dark);
+}
+.register-link a, .login-link a {
+  color: var(--accent);
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 600;
+}

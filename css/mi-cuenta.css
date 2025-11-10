@@ -1,0 +1,16 @@
+/* Estilos únicos para la página de mi cuenta */
+#userInfo {
+  max-width: 400px;
+  margin: 30px auto 20px auto;
+  background: var(--card);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  font-size: 17px;
+  color: var(--accent-dark);
+}
+#userProducts {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 10px;
+}
