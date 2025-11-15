@@ -1,0 +1,87 @@
+/* Contenedor general */
+.pago-container {
+  max-width: 480px;
+  margin: 40px auto;
+  padding: 20px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Tarjeta principal */
+.pago-card {
+  background: var(--card);
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+  text-align: center;
+}
+
+[data-theme="dark"] .pago-card {
+  background: #1a1a1a;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.45);
+}
+
+/* Títulos */
+.pago-title {
+  margin: 0;
+  color: var(--accent);
+  font-size: 26px;
+  font-weight: 700;
+}
+.pago-sub {
+  color: var(--muted);
+  margin-top: 6px;
+  font-size: 15px;
+}
+
+/* Precio */
+.pago-precio {
+  margin: 25px 0;
+}
+.pago-precio .monto {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--accent);
+}
+.pago-precio .periodo {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: -5px;
+}
+
+/* Lista de beneficios */
+.pago-beneficios {
+  text-align: left;
+  list-style: none;
+  padding-left: 0;
+  margin: 20px 0;
+}
+.pago-beneficios li {
+  margin: 8px 0;
+  font-size: 16px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* Botones override */
+#btnPagar {
+  background: var(--accent);
+  border-radius: 40px;
+}
+#btnPagar:hover {
+  background: var(--accent-dark);
+}
+
+#btnCancelar {
+  border-radius: 40px;
+  padding: 12px 26px;
+}
+
+/* Responsivo */
+@media (max-width: 500px) {
+  .pago-card {
+    padding: 20px;
+  }
+  .pago-title { font-size: 22px; }
+  .pago-precio .monto { font-size: 34px; }
+}

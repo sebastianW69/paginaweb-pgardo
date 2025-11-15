@@ -23,6 +23,7 @@
         ☰
       </button>
     </div>
+
     <!-- Menú móvil -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="menuMobile">
       <div class="offcanvas-header">
@@ -38,45 +39,47 @@
       </div>
     </div>
   </header>
+
   <main>
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-12 col-md-8 col-lg-6">
           <div class="register-modal mt-5">
             <div class="register-title">Crear cuenta</div>
-            <form class="register-fields">
-              <form action="./php/temyhum.php" method="post">
-              <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre:</label>
-                <input id="nombre" class="form-control" placeholder="Nombre" required />
-              </div>
-              <div class="mb-3">
-                <label for="edad" class="form-label">Edad:</label>
-                <input id="edad" type="number" class="form-control" placeholder="Edad" required />
-              </div>
-              <div class="mb-3">
-                <label for="nombre del negocio" class="form-label">Nombre del negocio:</label>
-                <input id="nombre del negocio" class="form-control" placeholder="Negocio" required />
-              </div>
-              <div class="mb-3">
-                <label for="numero cedula" class="form-label">Número de cédula:</label>
-                <input id="numero cedula" type="number" class="form-control" placeholder="Cédula" required />
-              </div>
-              <div class="mb-3">
-                <label for="telefono" class="form-label">Teléfono:</label>
-                <input id="telefono" type="tel" class="form-control" placeholder="Teléfono" required />
-              </div>
-              <div class="mb-3">
-                <label for="dirección" class="form-label">Dirección:</label>
-                <input id="dirección" class="form-control" placeholder="Dirección" required />
-              </div>
-              <div class="mb-3">
-                <label for="contraseña" class="form-label">Contraseña:</label>
-                <input id="contraseña" type="password" class="form-control" placeholder="Contraseña" required />
-              </div>
-              <button class="btn w-100" id="registerSubmit">Registrarse</button>
-              </form>
-            </form>
+            
+            <form id="formRegistro">
+  <div class="mb-3">
+    <label for="nombre" class="form-label">Nombre:</label>
+    <input type="text" id="nombre" class="form-control" placeholder="Nombre" required />
+  </div>
+
+  <div class="mb-3">
+    <label for="email" class="form-label">Correo:</label>
+    <input type="email" id="email" class="form-control" placeholder="Correo" required />
+  </div>
+
+  <div class="mb-3">
+    <label for="password" class="form-label">Contraseña:</label>
+    <input type="password" id="password" class="form-control" placeholder="Contraseña" required />
+  </div>
+
+  <div class="mb-3">
+  <label class="form-label">Elige un plan:</label>
+  <div class="d-flex gap-3">
+    <div>
+      <input type="radio" name="plan" id="planFree" value="free" checked>
+      <label for="planFree">Free</label>
+    </div>
+    <div>
+      <input type="radio" name="plan" id="planPremium" value="premium">
+      <label for="planPremium">Premium</label>
+    </div>
+  </div>
+</div>
+
+  <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+</form>
+
             <div class="login-link mt-3">
               ¿Ya tienes cuenta? <a href="iniciar-sesion.html">Inicia sesión</a>
             </div>
@@ -85,10 +88,59 @@
       </div>
     </div>
   </main>
+
   <footer class="bg-light text-center py-3 mt-5">
     © 2025 TextilBog - Todos los derechos reservados
   </footer>
+
   <script src="../bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
   <script src="../js/mecanicas.js"></script>
+
+  <!-- Script para enviar los datos al backend en Node.js -->
+<script>
+document.getElementById("formRegistro").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const plan = document.querySelector("input[name='plan']:checked").value;
+
+  const datos = {
+    nombre: document.getElementById("nombre").value,
+    email: document.getElementById("email").value,
+    password: document.getElementById("password").value,
+    plan: plan
+  };
+
+  try {
+    const res = await fetch("http://localhost:3000/api/usuarios/registro", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datos)
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+
+      if (plan === "free") {
+        // AUTO LOGIN
+        localStorage.setItem("usuario", JSON.stringify(data.usuario));
+        window.location.href = "mi-cuenta.html";
+
+      } else if (plan === "premium") {
+        // Guardar usuario pero todavía NO tiene plan activo
+        localStorage.setItem("usuario-temp", JSON.stringify(data.usuario));
+        window.location.href = "pago.html"; 
+      }
+
+    } else {
+      alert("❌ " + data.mensaje);
+    }
+
+  } catch (error) {
+    console.error("Error:", error);
+    alert("⚠️ Error de conexión al servidor.");
+  }
+});
+</script>
 </body>
 </html>

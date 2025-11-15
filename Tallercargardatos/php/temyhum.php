@@ -2,14 +2,14 @@
 include 'conectar.php';
 $nombre = $_POST['nombre'];
 $edad = $_POST['edad'];
-$nombredelnegocio = $_POST['nomnbre del negocio'];
-$numerocedula = $_POST['numero cedula'];
+$nombre_del_negocio = $_POST['nombre_del_negocio'];
+$numero_cedula = $_POST['numero_cedula'];
 $telefono = $_POST['telefono'];
-$dirección = $_POST['dirección'];
-$contraseña = $_POST['contraseña'];
+$direccion = $_POST['direccion'];
+$contra = $_POST['contra'];
 
-$sql = "INSERT INTO usuario (nombre, edad, nomnre del negocio, numero cedula, telefono, dirección, contraseña)
-VALUES ('$nombre', '$edad', '$nombredelnegocio', '$numerocedula', '$telefono', '$dirección', '$contraseña' )";
+$sql = "INSERT INTO usuario (nombre, edad, nombre_del_negocio, numero_cedula, telefono, direccion, contra)
+VALUES ('$nombre', '$edad', '$nombre_del_negocio', '$numero_cedula', '$telefono', '$direccion', '$contra' )";
 
 if (mysqli_query($conn, $sql)) {
   echo "New record created successfully";

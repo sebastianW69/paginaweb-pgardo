@@ -6,42 +6,225 @@
   <title>Marketplace Textil - Prototipo Premium</title>
   <link rel="stylesheet" href="css/estilo.css" />
   <link rel="stylesheet" href="./bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+  <style>
+    /* Estilos adicionales para el modal del carrito */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content {
+      background-color: var(--card);
+      margin: 5% auto;
+      padding: 30px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      position: relative;
+      animation: slideIn 0.3s ease;
+    }
+
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--accent);
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .close:hover {
+      color: var(--accent-dark);
+    }
+
+    .cart-icon {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      font-size: 24px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+
+    .cart-icon:hover {
+      background: rgba(198,166,100,0.15);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #ff0040;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    #productModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(3px);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    #productModal > div {
+      width: 90%;
+      max-width: 420px;
+      background: var(--card);
+      border-radius: 15px;
+      padding: 20px;
+      position: relative;
+      animation: fadeIn 0.3s ease;
+    }
+
+    #productModal button.close-modal {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border: none;
+      background: #ff0040;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    #productModal img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: var(--bg);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .btn-remove {
+      background: #ff0040;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    .btn-remove:hover {
+      background: #cc0033;
+    }
+  </style>
 </head>
+
 <body data-theme="light">
+
+  <!-- ========== MODAL CARRITO ========== -->
+  <div id="cartModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeCart()">✖</span>
+      <h3 style="color: var(--accent); margin-bottom: 20px;">🛒 Tu Carrito</h3>
+      <div id="cartItems"></div>
+      <h4 style="margin-top: 20px; color: var(--accent);">Total: <span id="cartTotal">0</span> COP</h4>
+      <button class="btn" onclick="checkout()" style="width: 100%; margin-top: 15px;">Finalizar compra</button>
+    </div>
+  </div>
+
+  <!-- ========== HEADER ========== -->
   <header class="bg-light shadow-sm">
     <div class="container-fluid d-flex align-items-center py-2 flex-wrap">
       <div class="logo flex-grow-1">TextilBog</div>
+
       <div class="search flex-grow-1 mx-3">
         <input class="form-control" placeholder="Buscar productos, talleres o materiales..." />
       </div>
-      <nav class="navlinks d-none d-md-flex gap-3">
-        <a id="loginBtn" href="paginas/iniciar-sesion.html" class="nav-link">Iniciar sesión</a>
+
+      <nav class="navlinks d-none d-md-flex gap-3 align-items-center">
+        <a href="paginas/iniciar-sesion.html" class="nav-link">Iniciar sesión</a>
         <a href="paginas/categoria.html" class="nav-link">Categorías</a>
         <a href="paginas/vender.html" class="nav-link">Vender</a>
         <a href="paginas/mi-cuenta.html" class="nav-link">Mi cuenta</a>
-        <div class="cart-icon" id="openCart">🛒<span class="cart-count" id="cartCount">0</span></div>
+
+        <!-- ICONO CARRITO -->
+        <div class="cart-icon" onclick="openCart()">
+          🛒 <span class="cart-count" id="cartCount">0</span>
+        </div>
       </nav>
+
       <button class="btn btn-outline-secondary d-md-none ms-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuMobile">
         ☰
       </button>
+
       <button class="toggle-theme ms-2" id="toggleTheme">🌙</button>
     </div>
-    <!-- Menú móvil -->
+
+    <!-- MENÚ MÓVIL -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="menuMobile">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title">Menú</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
       </div>
+
       <div class="offcanvas-body">
-        <a id="loginBtn" href="paginas/iniciar-sesion.html" class="nav-link">Iniciar sesión</a>
+        <a href="paginas/iniciar-sesion.html" class="nav-link">Iniciar sesión</a>
         <a href="paginas/categoria.html" class="nav-link">Categorías</a>
         <a href="paginas/vender.html" class="nav-link">Vender</a>
         <a href="paginas/mi-cuenta.html" class="nav-link">Mi cuenta</a>
-        <div class="cart-icon" id="openCart">🛒<span class="cart-count" id="cartCount">0</span></div>
+
+        <!-- ICONO CARRITO MÓVIL -->
+        <div class="cart-icon mt-3" onclick="openCart()">
+          🛒 <span class="cart-count" id="cartCountMobile">0</span>
+        </div>
       </div>
     </div>
   </header>
 
+  <!-- ========== SECCIÓN HERO ========== -->
   <section class="bg-light shadow-sm text-center py-4">
     <h2 style="color:var(--accent);margin-bottom:12px;">Bienvenido a TextilBog</h2>
     <p class="mx-auto text-muted fs-5" style="max-width:700px;">
@@ -49,8 +232,10 @@
     </p>
   </section>
 
+  <!-- ========== MAIN ========== -->
   <main class="bg-light shadow-sm container">
-    <!-- Hero centrado y grande en escritorio -->
+
+    <!-- Hero -->
     <section class="hero row justify-content-center align-items-center mb-4">
       <div class="col-12 col-lg-6 d-flex flex-column align-items-center">
         <div class="hero-card p-4 rounded shadow-sm mb-3 w-100 text-center">
@@ -62,112 +247,90 @@
           </div>
         </div>
       </div>
+
       <div class="col-12 col-lg-6 text-center">
-        <img src="./imagenes/inicio.png" alt="Hero Textil" class="img-fluid rounded mx-auto" />
+        <img src="./imagenes/inicio.png" alt="Hero Textil" class="img-fluid rounded mx-auto">
       </div>
     </section>
 
     <!-- Categorías -->
     <section class="cats row justify-content-center mb-4">
-      <div class="col-6 col-md-3 mb-3">
-        <div class="cat text-center p-3 rounded">👗 Ropa femenina</div>
-      </div>
-      <div class="col-6 col-md-3 mb-3">
-        <div class="cat text-center p-3 rounded">👕 Ropa masculina</div>
-      </div>
-      <div class="col-6 col-md-3 mb-3">
-        <div class="cat text-center p-3 rounded">🧒 Infantil</div>
-      </div>
-      <div class="col-6 col-md-3 mb-3">
-        <div class="cat text-center p-3 rounded">👜 Accesorios</div>
-      </div>
+      <div class="col-6 col-md-3 mb-3"><div class="cat text-center p-3 rounded">👗 Ropa femenina</div></div>
+      <div class="col-6 col-md-3 mb-3"><div class="cat text-center p-3 rounded">👕 Ropa masculina</div></div>
+      <div class="col-6 col-md-3 mb-3"><div class="cat text-center p-3 rounded">🧒 Infantil</div></div>
+      <div class="col-6 col-md-3 mb-3"><div class="cat text-center p-3 rounded">👜 Accesorios</div></div>
     </section>
 
-    <!-- Productos destacados en matriz centrada y responsive -->
+    <!-- PRODUCTOS DESTACADOS -->
     <h3 class="mb-4 fs-4 text-center" style="color:var(--accent);font-weight:700">Productos destacados</h3>
+
+    <div id="productosInicio" class="grid-productos"></div>
+
     <div class="row justify-content-center">
+
+      <!-- PRODUCTO 1 -->
       <div class="col-12 col-sm-6 col-lg-4 mb-4 d-flex">
-        <article class="product h-100 w-100" onclick="openProduct('p1')">
-          <div class="thumb"><img src="./imagenes/campesino.png" alt="Blusa artesanal" class="img-fluid rounded" /></div>
+        <article class="product h-100 w-100" onclick="openProduct('p1')" style="cursor: pointer;">
+          <div class="thumb"><img src="./imagenes/campesino.png" class="img-fluid rounded"></div>
           <div class="p-title">Blusa campesina - Algodón</div>
           <div class="p-price">$75.000 COP</div>
           <div class="p-seller">Taller Los Andes</div>
-          <div class="p-desc">Blusa fresca de algodón 100%, con bordados artesanales inspirados en la cultura andina.</div>
+          <div class="p-desc">Blusa de algodón 100%, con bordados artesanales.</div>
           <div class="p-reviews"><span class="stars">★★★★★</span> (12 reseñas)</div>
         </article>
       </div>
+
+      <!-- PRODUCTO 2 -->
       <div class="col-12 col-sm-6 col-lg-4 mb-4 d-flex">
-        <article class="product h-100 w-100" onclick="openProduct('p2')">
-          <div class="thumb"><img src="./imagenes/lino.png" alt="Camisa lino stretch" class="img-fluid rounded" /></div>
+        <article class="product h-100 w-100" onclick="openProduct('p2')" style="cursor: pointer;">
+          <div class="thumb"><img src="./imagenes/lino.png" class="img-fluid rounded"></div>
           <div class="p-title">Camisa lino stretch</div>
           <div class="p-price">$120.000 COP</div>
           <div class="p-seller">Atelier M</div>
-          <div class="p-desc">Camisa ligera de lino con elasticidad, ideal para climas cálidos. Corte moderno y elegante.</div>
+          <div class="p-desc">Camisa ligera ideal para clima cálido.</div>
           <div class="p-reviews"><span class="stars">★★★★☆</span> (8 reseñas)</div>
         </article>
       </div>
+
+      <!-- PRODUCTO 3 -->
       <div class="col-12 col-sm-6 col-lg-4 mb-4 d-flex">
-        <article class="product h-100 w-100" onclick="openProduct('p3')">
-          <div class="thumb"><img src="./imagenes/vestido.png" alt="Vestido verano" class="img-fluid rounded" /></div>
+        <article class="product h-100 w-100" onclick="openProduct('p3')" style="cursor: pointer;">
+          <div class="thumb"><img src="./imagenes/vestido.png" class="img-fluid rounded"></div>
           <div class="p-title">Vestido verano</div>
           <div class="p-price">$95.000 COP</div>
           <div class="p-seller">Hecho a Mano</div>
-          <div class="p-desc">Vestido ligero y vaporoso con estampados florales, perfecto para ocasiones casuales o de playa.</div>
+          <div class="p-desc">Vestido ligero con estampado floral.</div>
           <div class="p-reviews"><span class="stars">★★★★★</span> (15 reseñas)</div>
         </article>
       </div>
+
+      <!-- PRODUCTO 4 -->
       <div class="col-12 col-sm-6 col-lg-4 mb-4 d-flex">
-        <article class="product h-100 w-100" onclick="openProduct('p4')">
-          <div class="thumb"><img src="./imagenes/cuero.png" alt="Chaqueta cuero" class="img-fluid rounded" /></div>
+        <article class="product h-100 w-100" onclick="openProduct('p4')" style="cursor: pointer;">
+          <div class="thumb"><img src="./imagenes/cuero.png" class="img-fluid rounded"></div>
           <div class="p-title">Chaqueta cuero legítimo</div>
           <div class="p-price">$320.000 COP</div>
           <div class="p-seller">Leather Co.</div>
-          <div class="p-desc">Chaqueta clásica de cuero legítimo, resistente y elegante, ideal para un look urbano premium.</div>
+          <div class="p-desc">Chaqueta resistente y elegante.</div>
           <div class="p-reviews"><span class="stars">★★★★☆</span> (20 reseñas)</div>
         </article>
       </div>
+
+      <!-- PRODUCTO 5 -->
       <div class="col-12 col-sm-6 col-lg-4 mb-4 d-flex">
-        <article class="product h-100 w-100" onclick="openProduct('p5')">
-          <div class="thumb"><img src="./imagenes/bolso.png" alt="Bolso artesanal" class="img-fluid rounded" /></div>
+        <article class="product h-100 w-100" onclick="openProduct('p5')" style="cursor: pointer;">
+          <div class="thumb"><img src="./imagenes/bolso.png" class="img-fluid rounded"></div>
           <div class="p-title">Bolso artesanal en fique</div>
           <div class="p-price">$85.000 COP</div>
           <div class="p-seller">Arte Local</div>
-          <div class="p-desc">Bolso tejido en fique natural con detalles en cuero, elaborado por artesanos bogotanos.</div>
+          <div class="p-desc">Bolso tejido en fique natural.</div>
           <div class="p-reviews"><span class="stars">★★★★★</span> (10 reseñas)</div>
         </article>
       </div>
+
     </div>
 
-    <section class="checkout-section">
-      <h3>🛍️ Carrito de compras y pago</h3>
-      <div class="row checkout-options">
-        <div class="col-12 col-md-6 mb-3">
-          <div class="checkout-card h-100">
-            <h4>Medios de pago</h4>
-            <ul>
-              <li>💳 Tarjeta débito/crédito</li>
-              <li>🏦 Transferencia bancaria</li>
-              <li>📱 Pagos móviles (Nequi, Daviplata)</li>
-              <li>💵 Pago contra entrega</li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-12 col-md-6 mb-3">
-          <div class="checkout-card h-100">
-            <h4>Opciones de envío</h4>
-            <ul>
-              <li>🚚 Envío estándar (3-5 días hábiles)</li>
-              <li>⚡ Envío express (24-48h)</li>
-              <li>📍 Recoger en tienda</li>
-              <li>🌎 Envíos nacionales</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="cartItems"></div>
-      <p>Total: <span id="cartTotal">0</span> COP</p>
-    </section>
-
+    <!-- Comentarios -->
     <section class="checkout-section">
       <h3>💬 Comentarios de la página</h3>
       <div id="commentsList"></div>
@@ -175,6 +338,7 @@
       <button class="btn" id="submitComment">Enviar</button>
     </section>
 
+    <!-- Soporte -->
     <section class="checkout-section">
       <h3>📞 Servicio al Cliente</h3>
       <p>¿Necesitas ayuda? Contáctanos:</p>
@@ -186,55 +350,281 @@
       <textarea id="supportMsg" class="form-control mb-2" placeholder="Escribe tu mensaje de soporte..."></textarea>
       <button class="btn" onclick="alert('Mensaje enviado al servicio al cliente')">Enviar</button>
     </section>
+
   </main>
 
-  <footer class="bg-light shadow-sm text-center py-3 mt-5">
-    © 2025 TextilBog - Todos los derechos reservados
-  </footer>
-
-  <div class="modal" id="loginModal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('#loginModal')">✖</span>
-      <h3>Iniciar sesión</h3>
-      <input id="loginName" placeholder="Nombre"/><br/>
-      <input id="loginPass" type="password" placeholder="Contraseña"/><br/>
-      <button class="btn" id="loginSubmit">Entrar</button>
+  <!-- ========== MODAL DEL PRODUCTO ========== -->
+  <div id="productModal">
+    <div>
+      <button class="close-modal" onclick="closeProduct()">✖</button>
+      <img id="modalImage" src="" alt="Producto">
+      <h3 id="modalTitle" style="margin:0 0 10px; font-size:22px; font-weight:600; color: var(--text);"></h3>
+      <p id="modalDesc" style="color:var(--muted); font-size:15px; margin-bottom:10px;"></p>
+      <p id="modalPrice" style="font-size:20px; font-weight:700; margin-bottom:20px; color:var(--accent);"></p>
+      <button id="modalAddBtn" class="btn" style="width:100%;">Agregar al carrito</button>
     </div>
   </div>
 
-  <div class="modal" id="productModal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('#productModal')">✖</span>
-      <h3 id="modalTitle"></h3>
-      <img id="modalImg" style="width:100%;border-radius:12px"/>
-      <p id="modalDesc"></p>
-      <p><b id="modalPrice"></b></p>
-      <label>Color:
-        <select id="modalColor" class="form-select">
-          <option>Rojo</option>
-          <option>Azul</option>
-          <option>Negro</option>
-          <option>Blanco</option>
-          <option>Verde</option>
-        </select>
-      </label>
-      <label>Talla:
-        <select id="modalSize" class="form-select">
-          <option>S</option>
-          <option>M</option>
-          <option>L</option>
-          <option>XL</option>
-        </select>
-      </label>
-      <button class="btn" id="addToCart">Agregar al carrito</button>
-      <h4>Reseñas</h4>
-      <div id="reviewsList"></div>
-      <textarea id="reviewText" class="form-control mb-2" placeholder="Escribe una reseña..."></textarea>
-      <button class="btn" id="submitReview">Enviar reseña</button>
-    </div>
-  </div>
+  <!-- ========== JAVASCRIPT ========== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+  <script>
+    /* ============================================================
+       BASE DE DATOS DE PRODUCTOS
+       ============================================================ */
+    const productos = {
+      p1: {
+        id: "p1",
+        nombre: "Blusa campesina - Algodón",
+        precio: 75000,
+        imagen: "./imagenes/campesino.png",
+        descripcion: "Blusa de algodón 100% con bordados artesanales."
+      },
+      p2: {
+        id: "p2",
+        nombre: "Camisa lino stretch",
+        precio: 120000,
+        imagen: "./imagenes/lino.png",
+        descripcion: "Camisa fresca con tejido elástico, ideal para clima cálido."
+      },
+      p3: {
+        id: "p3",
+        nombre: "Vestido verano",
+        precio: 95000,
+        imagen: "./imagenes/vestido.png",
+        descripcion: "Vestido ligero, fresco, estampado floral."
+      },
+      p4: {
+        id: "p4",
+        nombre: "Chaqueta cuero legítimo",
+        precio: 320000,
+        imagen: "./imagenes/cuero.png",
+        descripcion: "Chaqueta de cuero genuino, elegante y resistente."
+      },
+      p5: {
+        id: "p5",
+        nombre: "Bolso artesanal en fique",
+        precio: 85000,
+        imagen: "./imagenes/bolso.png",
+        descripcion: "Bolso tejido en fique 100% artesanal."
+      }
+    };
 
-  <script src="./bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/mecanicas.js"></script>
+    /* ============================================================
+       TEMA OSCURO/CLARO
+       ============================================================ */
+    const toggleTheme = document.getElementById('toggleTheme');
+    const body = document.body;
+
+    // Cargar tema guardado
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    body.setAttribute('data-theme', savedTheme);
+    toggleTheme.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+    toggleTheme.addEventListener('click', () => {
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      toggleTheme.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    });
+
+    /* ============================================================
+       MODAL DE PRODUCTO
+       ============================================================ */
+    function openProduct(id) {
+      const p = productos[id];
+      
+      document.getElementById("modalImage").src = p.imagen;
+      document.getElementById("modalTitle").innerText = p.nombre;
+      document.getElementById("modalDesc").innerText = p.descripcion;
+      document.getElementById("modalPrice").innerText = "$" + p.precio.toLocaleString() + " COP";
+      
+      document.getElementById("modalAddBtn").setAttribute("onclick", `addToCart('${id}')`);
+      
+      document.getElementById("productModal").style.display = "flex";
+    }
+
+    function closeProduct() {
+      document.getElementById("productModal").style.display = "none";
+    }
+
+    /* ============================================================
+       CARRITO (LocalStorage)
+       ============================================================ */
+    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+    function saveCart() {
+      localStorage.setItem("carrito", JSON.stringify(carrito));
+    }
+
+    function updateCartCount() {
+      const count = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+      document.getElementById("cartCount").innerText = count;
+      const mobileCount = document.getElementById("cartCountMobile");
+      if (mobileCount) mobileCount.innerText = count;
+    }
+
+    function addToCart(id) {
+      const producto = productos[id];
+      const existente = carrito.find(item => item.id === id);
+
+      if (existente) {
+        existente.cantidad++;
+      } else {
+        carrito.push({
+          id: id,
+          nombre: producto.nombre,
+          precio: producto.precio,
+          imagen: producto.imagen,
+          cantidad: 1
+        });
+      }
+
+      saveCart();
+      updateCartCount();
+      closeProduct();
+      alert("✅ Producto agregado al carrito");
+    }
+
+    function removeItem(id) {
+      carrito = carrito.filter(item => item.id !== id);
+      saveCart();
+      renderCart();
+      updateCartCount();
+    }
+
+    function renderCart() {
+      const cont = document.getElementById("cartItems");
+      const total = document.getElementById("cartTotal");
+
+      if (!cont || !total) return;
+
+      cont.innerHTML = "";
+
+      if (carrito.length === 0) {
+        cont.innerHTML = '<p style="text-align:center; color:var(--muted);">Tu carrito está vacío</p>';
+        total.innerText = "0";
+        return;
+      }
+
+      let suma = 0;
+
+      carrito.forEach(item => {
+        const subtotal = item.cantidad * item.precio;
+        suma += subtotal;
+
+        const cartItem = document.createElement('div');
+        cartItem.className = 'cart-item';
+        cartItem.innerHTML = `
+          <div class="cart-item-info">
+            <strong style="color: var(--text);">${item.nombre}</strong><br>
+            <span style="color: var(--muted);">
+              ${item.cantidad} x $${item.precio.toLocaleString()} = 
+              <strong style="color: var(--accent);">$${subtotal.toLocaleString()} COP</strong>
+            </span>
+          </div>
+          <button class="btn-remove" onclick="removeItem('${item.id}')">Eliminar</button>
+        `;
+        cont.appendChild(cartItem);
+      });
+
+      total.innerText = "$" + suma.toLocaleString();
+    }
+
+    function openCart() {
+      renderCart();
+      document.getElementById("cartModal").style.display = "block";
+    }
+
+    function closeCart() {
+      document.getElementById("cartModal").style.display = "none";
+    }
+
+    function checkout() {
+      if (carrito.length === 0) {
+        alert("Tu carrito está vacío");
+        return;
+      }
+      alert("🎉 ¡Gracias por tu compra! Total: $" + carrito.reduce((acc, item) => acc + (item.cantidad * item.precio), 0).toLocaleString() + " COP");
+      carrito = [];
+      saveCart();
+      renderCart();
+      updateCartCount();
+      closeCart();
+    }
+
+    /* ============================================================
+       COMENTARIOS
+       ============================================================ */
+    document.getElementById("submitComment")?.addEventListener("click", () => {
+      const text = document.getElementById("commentText").value.trim();
+      if (!text) return alert("Escribe un comentario");
+
+      const box = document.getElementById("commentsList");
+      const div = document.createElement("div");
+
+      div.className = "p-3 mb-2 rounded shadow-sm";
+      div.style.background = "var(--bg)";
+      div.style.color = "var(--text)";
+      div.innerText = text;
+
+      box.appendChild(div);
+
+      document.getElementById("commentText").value = "";
+    });
+
+    /* ============================================================
+       INICIALIZAR
+       ============================================================ */
+    updateCartCount();
+
+    // Cerrar modales al hacer clic fuera
+    window.onclick = function(event) {
+      const cartModal = document.getElementById('cartModal');
+      const productModal = document.getElementById('productModal');
+      
+      if (event.target === cartModal) {
+        closeCart();
+      }
+      if (event.target === productModal) {
+        closeProduct();
+      }
+    }
+  </script>
+  <script>
+async function cargarProductosInicio() {
+  try {
+    const res = await fetch("http://localhost:3000/api/productos");
+    const productos = await res.json();
+
+    const contenedor = document.getElementById("productosInicio");
+    contenedor.innerHTML = "";
+
+    productos.forEach(p => {
+      const div = document.createElement("div");
+      div.className = "producto-card";
+      div.innerHTML = `
+        <img src="${p.imagen || 'uploads/placeholder.png'}" alt="${p.nombre}">
+        <h3>${p.nombre}</h3>
+        <p class="precio">$${Number(p.precio).toFixed(2)}</p>
+        <button class="btn-ver" onclick="verProducto(${p.id})">Ver más</button>
+      `;
+      contenedor.appendChild(div);
+    });
+
+  } catch (err) {
+    console.error("Error cargando productos", err);
+  }
+}
+
+function verProducto(id){
+  window.location.href = "producto.html?id=" + id;
+}
+
+cargarProductosInicio();
+</script>
+
+
 </body>
 </html>

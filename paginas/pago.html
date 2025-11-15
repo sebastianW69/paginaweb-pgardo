@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pagar membresía Premium - TextilBog</title>
+
+  <link rel="stylesheet" href="../css/estilo.css" />
+  <link rel="stylesheet" href="../bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+
+  <style>
+    .payment-box {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 16px;
+      background: var(--card);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .method {
+      padding: 14px;
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-bottom: 10px;
+      text-align: center;
+      transition: 0.3s;
+    }
+    .method:hover { background: rgba(198,166,100,0.1); }
+
+    .hidden { display: none; }
+  </style>
+</head>
+
+<body data-theme="light">
+
+<header class="bg-light shadow-sm">
+  <div class="container-fluid d-flex align-items-center py-2 flex-wrap">
+    <div class="logo flex-grow-1">TextilBog</div>
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="payment-box">
+    <h2 class="text-center" style="color:var(--accent);">Membresía Premium</h2>
+    <p class="text-center text-muted">Valor: <strong>$50.000 COP / mes</strong></p>
+
+    <h4 class="mt-4">Selecciona un método de pago:</h4>
+
+    <div id="paypalBtn" class="method">PayPal</div>
+    <div id="visaBtn" class="method">Visa</div>
+    <div id="masterBtn" class="method">Mastercard</div>
+    <div id="nequiBtn" class="method">Nequi</div>
+
+    <form id="formPago" class="hidden mt-4">
+      <div id="fields"></div>
+
+      <button type="submit" class="btn btn-primary w-100 mt-3">Confirmar pago</button>
+    </form>
+
+  </div>
+
+</main>
+
+<footer class="bg-light text-center py-3 mt-5">
+  © 2025 TextilBog - Todos los derechos reservados
+</footer>
+
+<script>
+  const metodoBtns = {
+    paypal: document.getElementById("paypalBtn"),
+    visa: document.getElementById("visaBtn"),
+    master: document.getElementById("masterBtn"),
+    nequi: document.getElementById("nequiBtn")
+  };
+
+  const form = document.getElementById("formPago");
+  const fields = document.getElementById("fields");
+  let metodo = "";
+
+  function mostrarFormulario(tipo) {
+    metodo = tipo;
+    form.classList.remove("hidden");
+
+    if (tipo === "paypal") {
+      fields.innerHTML = `
+        <label>Email de PayPal:</label>
+        <input class="form-control" type="email" required />
+      `;
+    }
+    if (tipo === "visa" || tipo === "master") {
+      fields.innerHTML = `
+        <label>Número de tarjeta:</label>
+        <input class="form-control" type="text" maxlength="16" required />
+
+        <label class="mt-3">Fecha de vencimiento:</label>
+        <input class="form-control" type="month" required />
+
+        <label class="mt-3">CVV:</label>
+        <input class="form-control" type="password" maxlength="3" required />
+      `;
+    }
+    if (tipo === "nequi") {
+      fields.innerHTML = `
+        <label>Número de celular Nequi:</label>
+        <input class="form-control" type="number" required />
+      `;
+    }
+  }
+
+  metodoBtns.paypal.onclick = () => mostrarFormulario("paypal");
+  metodoBtns.visa.onclick = () => mostrarFormulario("visa");
+  metodoBtns.master.onclick = () => mostrarFormulario("master");
+  metodoBtns.nequi.onclick = () => mostrarFormulario("nequi");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    if (!usuario) {
+      alert("No estás logueado.");
+      return;
+    }
+
+    alert("💳 Pago simulado completado con éxito.");
+
+    // Se actualiza el plan en el servidor
+    const res = await fetch("http://localhost:3000/api/usuarios/plan", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: usuario.id, plan: "premium" }),
+    });
+
+    const data = await res.json();
+    console.log(data);
+
+    // Guardar en localStorage
+    usuario.plan = "premium";
+    localStorage.setItem("usuario", JSON.stringify(usuario));
+
+    alert("🎉 ¡Ya eres usuario PREMIUM!");
+    window.location.href = "mi-cuenta.html";
+  });
+</script>
+
+</body>
+</html>

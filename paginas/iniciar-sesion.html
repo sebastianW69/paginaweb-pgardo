@@ -16,12 +16,14 @@
         <a href="../index.html" class="nav-link">Inicio</a>
         <a href="categoria.html" class="nav-link">Categorías</a>
         <a href="vender.html" class="nav-link">Vender</a>
-        <a href="mi-cuenta.html" class="nav-link">Mi cuenta</a>
+        <a href="iniciar-sesion.html" class="nav-link" id="linkLogin">Iniciar sesión</a>
+        <a href="mi-cuenta.html" class="nav-link d-none" id="linkCuenta">Mi cuenta</a>
       </nav>
       <button class="btn btn-outline-secondary d-md-none ms-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuMobile">
         ☰
       </button>
     </div>
+
     <!-- Menú móvil -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="menuMobile">
       <div class="offcanvas-header">
@@ -36,6 +38,7 @@
       </div>
     </div>
   </header>
+
   <main>
     <div class="container">
       <div class="row justify-content-center">
@@ -43,24 +46,26 @@
           <div class="login-modal mt-5">
             <div class="login-title">Iniciar sesión</div>
             <form class="login-fields">
-              <div class="row g-3">
-                <div class="col-12 col-md-6">
-                  <label for="loginName" class="form-label">Nombre:</label>
-                  <input id="loginName" class="form-control" placeholder="Nombre" />
-                </div>
-                <div class="col-12 col-md-6">
-                  <label for="loginPass" class="form-label">Contraseña:</label>
-                  <input id="loginPass" type="password" class="form-control" placeholder="Contraseña" />
-                </div>
-              </div>
+              <div class="mb-3">
+  <label for="loginEmail" class="form-label">Correo:</label>
+  <input id="loginEmail" type="email" class="form-control" placeholder="Correo" required />
+</div>
+
+<div class="mb-3">
+  <label for="loginPass" class="form-label">Contraseña:</label>
+  <input id="loginPass" type="password" class="form-control" placeholder="Contraseña" required />
+</div>
+
             </form>
-            <div class="plan-label w-100">Elige tu plan:</div>
-            <div class="plan-options w-100">
+
+            <div class="plan-label w-100 mt-4">Elige tu plan:</div>
+            <div class="plan-options w-100" style="display: none;">
               <div class="plan-card flex-fill mx-1" id="planFree">Free<br><small>Incluye lo básico</small></div>
               <div class="plan-card flex-fill mx-1" id="planPremium">Premium<br><small>Productos destacados y comisión menor</small></div>
             </div>
-            <button class="btn" id="loginSubmit">Entrar</button>
-            <div class="register-link">
+
+            <button class="btn btn-primary mt-3" id="loginSubmit">Entrar</button>
+            <div class="register-link mt-2">
               ¿No tienes cuenta? <a href="registro.html">Crea una</a>
             </div>
           </div>
@@ -68,10 +73,75 @@
       </div>
     </div>
   </main>
+
   <footer class="bg-light text-center py-3 mt-5">
     © 2025 TextilBog - Todos los derechos reservados
   </footer>
+
   <script src="../bootstrap-5.3.3-dist/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
   <script src="../js/mecanicas.js"></script>
+
+  <!-- ✅ Script de login y control de sesión -->
+  <script>
+// Si ya hay usuario logueado, ajustar el menú
+document.addEventListener("DOMContentLoaded", () => {
+  actualizarMenu();
+});
+
+// Actualizar menú según si hay usuario guardado
+function actualizarMenu() {
+  const usuario = localStorage.getItem("usuario");
+  const linkLogin = document.getElementById("linkLogin");
+  const linkCuenta = document.getElementById("linkCuenta");
+
+  if (usuario) {
+    linkLogin.classList.add("d-none");
+    linkCuenta.classList.remove("d-none");
+  } else {
+    linkLogin.classList.remove("d-none");
+    linkCuenta.classList.add("d-none");
+  }
+}
+
+document.getElementById("loginSubmit").addEventListener("click", async () => {
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPass").value.trim();
+
+  if (!email || !password) {
+    alert("Por favor completa todos los campos.");
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:3000/api/usuarios/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert("✅ Bienvenido, " + data.usuario.nombre);
+
+      // Guardar usuario en localStorage
+      localStorage.setItem("usuario", JSON.stringify(data.usuario));
+
+      // Actualizar menú
+      actualizarMenu();
+
+      // Ir directo a Mi cuenta
+      window.location.href = "mi-cuenta.html";
+
+    } else {
+      alert("❌ " + data.mensaje);
+    }
+
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    alert("⚠️ Error al conectar con el servidor.");
+  }
+});
+</script>
 </body>
 </html>
